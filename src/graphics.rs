@@ -9,10 +9,6 @@ use pixels::wgpu::{
 };
 use winit::{dpi::PhysicalSize, event_loop::EventLoopProxy, window::Window};
 
-#[cfg(target_arch = "wasm32")]
-pub type Rc<T> = std::rc::Rc<T>;
-
-#[cfg(not(target_arch = "wasm32"))]
 pub type Rc<T> = std::sync::Arc<T>;
 
 pub async fn create_graphics(window: Rc<Window>, proxy: EventLoopProxy<Graphics>) {
@@ -47,7 +43,6 @@ pub async fn create_graphics(window: Rc<Window>, proxy: EventLoopProxy<Graphics>
     let height = size.height.max(1);
     let surface_config = surface.get_default_config(&adapter, width, height).unwrap();
 
-    #[cfg(not(target_arch = "wasm32"))]
     surface.configure(&device, &surface_config);
 
     let render_pipeline = create_pipeline(&device, surface_config.format);
