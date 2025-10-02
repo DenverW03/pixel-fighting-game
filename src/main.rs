@@ -69,5 +69,16 @@ fn main() {
     //event_loop.set_control_flow(ControlFlow::Wait);
 
     let mut app = App::default();
+
+    let mut pixels = {
+        let window_size = app.window.as_ref().unwrap().inner_size();
+        let surface_texture = SurfaceTexture::new(
+            window_size.width,
+            window_size.height,
+            app.window.as_ref().unwrap(),
+        );
+        Pixels::new(WIDTH as u32, HEIGHT as u32, surface_texture)
+    };
+
     event_loop.run_app(&mut app).unwrap()
 }
