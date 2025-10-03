@@ -11,32 +11,31 @@ const HEIGHT: i32 = 240;
 #[derive(Default)]
 struct App {
     window: Option<Window>,
-    pixels: Option<Pixels>,
+    pixels: Option<Pixels<'static>>,
 }
 
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         let size = LogicalSize::new(WIDTH as f64, HEIGHT as f64);
         let scaled_size = LogicalSize::new(WIDTH as f64 * 2.0, HEIGHT as f64 * 2.0);
-        self.window = Some(
-            event_loop
-                .create_window(
-                    Window::default_attributes()
-                        .with_title("Pixel Fighting Game")
-                        .with_inner_size(scaled_size)
-                        .with_min_inner_size(size),
-                )
-                .unwrap(),
-        );
+        let window = event_loop
+            .create_window(
+                Window::default_attributes()
+                    .with_title("Pixel Fighting Game")
+                    .with_inner_size(scaled_size)
+                    .with_min_inner_size(size),
+            )
+            .unwrap();
+
+        let window_ref: &'static Window = Box::leak(Box::new(window));
 
         self.pixels = Some({
-            let window_size = self.window.as_ref().unwrap().inner_size();
             let surface_texture = SurfaceTexture::new(
-                window_size.width,
-                window_size.height,
-                self.window.as_ref().unwrap(),
+                window_ref.inner_size().width,
+                window_ref.inner_size().height,
+                window_ref,
             );
-            Pixels::new(WIDTH as u32, HEIGHT as u32, surface_texture)
+            Pixels::new(WIDTH as u32, HEIGHT as u32, surface_texture).unwrap()
         });
     }
 
