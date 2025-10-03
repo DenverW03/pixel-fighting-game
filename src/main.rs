@@ -11,6 +11,7 @@ const HEIGHT: i32 = 240;
 #[derive(Default)]
 struct App {
     window: Option<Window>,
+    pixels: Option<Pixels>,
 }
 
 impl ApplicationHandler for App {
@@ -27,6 +28,16 @@ impl ApplicationHandler for App {
                 )
                 .unwrap(),
         );
+
+        self.pixels = Some({
+            let window_size = self.window.as_ref().unwrap().inner_size();
+            let surface_texture = SurfaceTexture::new(
+                window_size.width,
+                window_size.height,
+                self.window.as_ref().unwrap(),
+            );
+            Pixels::new(WIDTH as u32, HEIGHT as u32, surface_texture)
+        });
     }
 
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
@@ -69,16 +80,6 @@ fn main() {
     //event_loop.set_control_flow(ControlFlow::Wait);
 
     let mut app = App::default();
-
-    let mut pixels = {
-        let window_size = app.window.as_ref().unwrap().inner_size();
-        let surface_texture = SurfaceTexture::new(
-            window_size.width,
-            window_size.height,
-            app.window.as_ref().unwrap(),
-        );
-        Pixels::new(WIDTH as u32, HEIGHT as u32, surface_texture)
-    };
 
     event_loop.run_app(&mut app).unwrap()
 }
