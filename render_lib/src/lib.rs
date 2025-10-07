@@ -29,6 +29,20 @@ impl App {
         app.scaled_size = LogicalSize::new(config.width as f64 * 2.0, config.height as f64 * 2.0);
         app
     }
+
+    // Pushes a new frame to the pixels buffer
+    // Passed in as a u8 slice, representing the flattened frame
+    pub fn push_frame(&mut self, new_frame: &[u8]) {
+        if let Some(pixels) = self.pixels.as_mut() {
+            let frame = pixels.frame_mut();
+
+            for i in 0..frame.len() {
+                frame[i] = new_frame[i];
+            }
+
+            pixels.render().unwrap();
+        }
+    }
 }
 
 impl ApplicationHandler for App {
@@ -69,34 +83,6 @@ impl ApplicationHandler for App {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
-                if let Some(pixels) = self.pixels.as_mut() {
-                    let frame = pixels.frame_mut();
-
-                    const BOX_SIZE: i16 = 64;
-                    let box_x: i16 = 100;
-                    let box_y: i16 = 100;
-
-                    for (i, pixel) in frame.chunks_exact_mut(4).enumerate() {
-                        let x = (i % self.size.width as usize) as i16;
-                        let y = (i / self.size.height as usize) as i16;
-
-                        let inside_the_box = x >= box_x
-                            && x < box_x + BOX_SIZE
-                            && y >= box_y
-                            && y < box_y + BOX_SIZE;
-
-                        let rgba = if inside_the_box {
-                            [0x5e, 0x48, 0xe8, 0xff]
-                        } else {
-                            [0x48, 0xb2, 0xe8, 0xff]
-                        };
-
-                        pixel.copy_from_slice(&rgba);
-                    }
-
-                    pixels.render().unwrap();
-                }
-
                 self.window.as_ref().unwrap().request_redraw();
             }
             _ => (),

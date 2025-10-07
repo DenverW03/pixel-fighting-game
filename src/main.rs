@@ -8,4 +8,6 @@ fn main() {
         scale: 2.0,
     };
     run(cfg).unwrap();
+
+    let mut _frame: [[u8; 320]; 240] = [[0; 320]; 240];
 }
