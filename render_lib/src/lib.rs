@@ -35,8 +35,9 @@ impl App {
     pub fn push_frame(&mut self, new_frame: &[u8]) {
         if let Some(pixels) = self.pixels.as_mut() {
             let frame = pixels.frame_mut();
+            let index_max = (self.scaled_size.width * self.scaled_size.height) as usize;
 
-            for i in 0..frame.len() {
+            for i in 0..index_max {
                 frame[i] = new_frame[i];
             }
 
@@ -72,6 +73,59 @@ impl ApplicationHandler for App {
             )
             .unwrap()
         });
+
+        /*
+        let test_frame: [[u8; 320 * 2]; 240 * 2] = [[0; 320 * 2]; 240 * 2];
+
+        let mut test_frame_flattened = {
+            let mut temp: [u8; 320 * 2 * 240 * 2] = [0; 320 * 2 * 240 * 2];
+            for i in 0..self.scaled_size.height as usize {
+                for j in 0..self.scaled_size.width as usize {
+                    temp[(i * 320 * 2) + j] = test_frame[i][j];
+                }
+            }
+            temp
+        };
+
+        test_frame_flattened[0] = 0x5e;
+        test_frame_flattened[1] = 0x48;
+        test_frame_flattened[2] = 0xe8;
+        test_frame_flattened[3] = 0xff;
+
+        for (i, pixel) in test_frame_flattened.chunks_exact_mut(4).enumerate() {
+            if i == (((240 * 100) - 1) + 100) {
+                pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]);
+            }
+        }
+
+        let index_last = self.scaled_size.width as usize * self.scaled_size.height as usize;
+        test_frame_flattened[index_last - 4] = 0x5e;
+        test_frame_flattened[index_last - 3] = 0x48;
+        test_frame_flattened[index_last - 2] = 0xe8;
+        test_frame_flattened[index_last - 1] = 0xff;
+
+        const BOX_SIZE: i16 = 64;
+        let box_x: i16 = 100;
+        let box_y: i16 = 100;
+
+        for (i, pixel) in test_frame_flattened.chunks_exact_mut(4).enumerate() {
+            let x = (i % self.size.width as usize) as i16;
+            let y = (i / self.size.height as usize) as i16;
+
+            let inside_the_box =
+                x >= box_x && x < box_x + BOX_SIZE && y >= box_y && y < box_y + BOX_SIZE;
+
+            let rgba = if inside_the_box {
+                [0x5e, 0x48, 0xe8, 0xff]
+            } else {
+                [0x48, 0xb2, 0xe8, 0xff]
+            };
+
+            pixel.copy_from_slice(&rgba);
+        }
+
+        self.push_frame(&test_frame_flattened);
+        */
 
         self.window.as_ref().unwrap().request_redraw();
     }
