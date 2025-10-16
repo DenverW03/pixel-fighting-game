@@ -20,12 +20,14 @@ pub struct App {
     pixels: Option<Pixels<'static>>,
     size: LogicalSize<f64>,
     scaled_size: LogicalSize<f64>,
+    title: String,
     frame_rx: Option<Receiver<Vec<u8>>>,
 }
 
 impl App {
     pub fn with_config(config: Config, frame_rx: Receiver<Vec<u8>>) -> Self {
         let mut app = App::default();
+        app.title = config.title;
         app.size = LogicalSize::new(config.width as f64, config.height as f64);
         app.scaled_size = LogicalSize::new(
             config.width as f64 * config.scale,
@@ -65,7 +67,7 @@ impl ApplicationHandler for App {
             event_loop
                 .create_window(
                     Window::default_attributes()
-                        .with_title("Pixel Fighting Game")
+                        .with_title(self.title.clone())
                         .with_inner_size(self.scaled_size)
                         .with_min_inner_size(self.size),
                 )
