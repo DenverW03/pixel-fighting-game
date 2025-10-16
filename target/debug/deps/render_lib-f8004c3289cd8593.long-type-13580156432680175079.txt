@@ -1,2 +1,0 @@
-objc2::rc::id::private::ArcLikeStorage<objc2_app_kit::generated::__NSApplication::NSApplication>
-objc2::rc::id::private::EquivalentType<objc2_app_kit::generated::__NSApplication::NSApplication>

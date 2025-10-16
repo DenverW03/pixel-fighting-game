@@ -1,4 +1,0 @@
-(dyn for<'a> FnMut(Event<winit::platform_impl::macos::app_state::HandlePendingUserEvents>, &'a ActiveEventLoop) + 'static)
-Unique<(dyn for<'a> FnMut(Event<winit::platform_impl::macos::app_state::HandlePendingUserEvents>, &'a ActiveEventLoop) + 'static)>
-Box<(dyn for<'a> FnMut(Event<winit::platform_impl::macos::app_state::HandlePendingUserEvents>, &'a ActiveEventLoop) + 'static)>
-objc2::rc::id::Retained<winit::platform_impl::macos::app_state::ApplicationDelegate>

@@ -1,8 +1,0 @@
-/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/pixels-410e59b05e89249b.d: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/builder.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/renderers.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/../shaders/scale.wgsl
-
-/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/libpixels-410e59b05e89249b.rmeta: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/builder.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/renderers.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/../shaders/scale.wgsl
-
-/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/lib.rs:
-/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/builder.rs:
-/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/renderers.rs:
-/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pixels-0.15.0/src/../shaders/scale.wgsl:

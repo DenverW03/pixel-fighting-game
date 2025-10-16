@@ -1,1 +1,0 @@
-objc2::rc::id::Retained<winit::platform_impl::macos::app_state::ApplicationDelegate>
