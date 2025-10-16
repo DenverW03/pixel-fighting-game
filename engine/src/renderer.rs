@@ -1,5 +1,5 @@
 use pixels::{Pixels, SurfaceTexture};
-use std::sync::{Arc, mpsc::Receiver};
+use std::sync::Arc;
 use winit::application::ApplicationHandler;
 use winit::dpi::LogicalSize;
 use winit::error::EventLoopError;
@@ -21,11 +21,11 @@ pub struct App {
     size: LogicalSize<f64>,
     scaled_size: LogicalSize<f64>,
     title: String,
-    frame_rx: Option<Receiver<Vec<u8>>>,
+    frame_counter: u32,
 }
 
 impl App {
-    pub fn with_config(config: Config, frame_rx: Receiver<Vec<u8>>) -> Self {
+    pub fn with_config(config: Config) -> Self {
         let mut app = App::default();
         app.title = config.title;
         app.size = LogicalSize::new(config.width as f64, config.height as f64);
@@ -33,16 +33,36 @@ impl App {
             config.width as f64 * config.scale,
             config.height as f64 * config.scale,
         );
-        app.frame_rx = Some(frame_rx);
+        app.frame_counter = 0;
         app
     }
 
-    fn try_update_frame(&mut self) {
-        if let Some(rx) = &self.frame_rx {
-            if let Ok(new_frame) = rx.try_recv() {
-                self.push_frame(&new_frame);
+    fn update_frame(&mut self) {
+        // Generate frame directly in the main thread
+        let frame = self.generate_frame();
+        self.push_frame(&frame);
+        self.frame_counter += 2; // Same increment as before
+    }
+
+    // Generate a frame for the current game state
+    fn generate_frame(&self) -> Vec<u8> {
+        let mut frame = vec![0x10; 320 * 240 * 4];
+
+        for (i, pixel) in frame.chunks_exact_mut(4).enumerate() {
+            let x = (i % 320) as i16;
+            let y = (i / 320) as i16;
+            let box_x = (self.frame_counter % 200) as i16;
+            let box_y = 100;
+
+            let inside = x >= box_x && x < box_x + 50 && y >= box_y && y < box_y + 50;
+            if inside {
+                pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple box
+            } else {
+                pixel.copy_from_slice(&[0x48, 0xb2, 0xe8, 0xff]); // sky color
             }
         }
+
+        frame
     }
 
     // Pushes a new frame to the pixels buffer
@@ -99,8 +119,8 @@ impl ApplicationHandler for App {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
-                // called every redraw
-                self.try_update_frame();
+                // Update game state and render frame
+                self.update_frame();
                 if let Some(pixels) = &mut self.pixels {
                     if let Err(e) = pixels.render() {
                         eprintln!("pixels.render() failed: {:?}", e);
@@ -117,9 +137,9 @@ pub fn create_event_loop() -> EventLoop<()> {
     EventLoop::new().unwrap()
 }
 
-// Creates an App, passing in the Config and frame receiver
-pub fn create_app(config: Config, frame_rx: Receiver<Vec<u8>>) -> App {
-    App::with_config(config, frame_rx)
+// Creates an App with the given Config
+pub fn create_app(config: Config) -> App {
+    App::with_config(config)
 }
 
 // Runs the event loop and app

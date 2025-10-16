@@ -1,0 +1,1 @@
+objc2::rc::id::Retained<objc2_app_kit::generated::__NSApplication::NSApplication>

@@ -1,0 +1,2 @@
+objc2::rc::id::private::ArcLikeStorage<winit::platform_impl::macos::app_state::ApplicationDelegate>
+objc2::rc::id::private::EquivalentType<winit::platform_impl::macos::app_state::ApplicationDelegate>

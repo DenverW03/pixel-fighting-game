@@ -1,0 +1,13 @@
+/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/block2-e68bd37a4b4fab4b.d: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/abi.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/block.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/debug.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/ffi.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/global.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/rc_block.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/stack.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/traits.rs
+
+/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/libblock2-e68bd37a4b4fab4b.rmeta: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/abi.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/block.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/debug.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/ffi.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/global.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/rc_block.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/stack.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/traits.rs
+
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/lib.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/abi.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/block.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/debug.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/ffi.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/global.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/rc_block.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/stack.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/traits.rs:

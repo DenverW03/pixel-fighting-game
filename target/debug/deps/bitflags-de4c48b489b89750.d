@@ -1,0 +1,11 @@
+/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/bitflags-de4c48b489b89750.d: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/iter.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/parser.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/traits.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/public.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/internal.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/external.rs
+
+/Users/denver/Documents/projects/pixel-fighting-game/target/debug/deps/libbitflags-de4c48b489b89750.rmeta: /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/lib.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/iter.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/parser.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/traits.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/public.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/internal.rs /Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/external.rs
+
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/lib.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/iter.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/parser.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/traits.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/public.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/internal.rs:
+/Users/denver/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.9.3/src/external.rs:
