@@ -1,4 +1,4 @@
-./target/
-./engine/target/
-./Cargo.lock
-./engine/Cargo.lock
+target/
+engine/target/
+Cargo.lock
+engine/Cargo.lock
