@@ -1,5 +1,7 @@
 use engine::initialize_game;
 
+mod components;
+mod ecs;
 mod engine;
 mod renderer;
 
