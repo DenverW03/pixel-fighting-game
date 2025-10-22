@@ -1,10 +1,11 @@
 use crate::renderer::{Config, create_app, create_event_loop, run};
 
-// Game state structure
+// Game state, includes entity+component storage
 pub struct GameState {
     pub frame_counter: u32,
     pub width: u32,
     pub height: u32,
+    pub world: World,
 }
 
 impl GameState {

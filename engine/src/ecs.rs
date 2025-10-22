@@ -1,3 +1,4 @@
+use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
 #[derive(PartialEq, Eq, Hash)]
@@ -28,5 +29,19 @@ impl<T> ComponentStorage<T> {
 
     pub fn remove(&mut self, entity: Entity) {
         self.components.remove(&entity);
+    }
+}
+
+pub struct World {
+    next_id: u32,
+    storages: HashMap<TypeId, Box<dyn Any>>,
+}
+
+impl World {
+    pub fn new() -> Self {
+        Self {
+            next_id: 0,
+            storages: HashMap::new(),
+        }
     }
 }
