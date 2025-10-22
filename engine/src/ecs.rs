@@ -1,7 +1,7 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
-#[derive(PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Entity(u32);
 
 pub struct ComponentStorage<T> {
@@ -43,5 +43,47 @@ impl World {
             next_id: 0,
             storages: HashMap::new(),
         }
+    }
+
+    pub fn create_entity(&mut self) -> Entity {
+        let id = self.next_id;
+        self.next_id += 1;
+        Entity(id)
+    }
+
+    fn get_storage<T: 'static>(&mut self) -> &mut ComponentStorage<T> {
+        let type_id = TypeId::of::<T>();
+
+        if !self.storages.contains_key(&type_id) {
+            self.storages
+                .insert(type_id, Box::new(ComponentStorage::<T>::new()));
+        }
+
+        self.storages
+            .get_mut(&type_id)
+            .unwrap()
+            .downcast_mut::<ComponentStorage<T>>()
+            .unwrap()
+    }
+
+    pub fn add_component<T: 'static>(&mut self, entity: Entity, component: T) {
+        let component_storage = self.get_storage::<T>();
+        component_storage.insert_component(entity, component)
+    }
+
+    pub fn get_component<T: 'static>(&self, entity: Entity) -> Option<&T> {
+        let type_id = TypeId::of::<T>();
+        self.storages
+            .get(&type_id)
+            .and_then(|s| s.downcast_ref::<ComponentStorage<T>>())
+            .and_then(|st| st.components.get(&entity))
+    }
+
+    pub fn get_component_mut<T: 'static>(&mut self, entity: Entity) -> Option<&mut T> {
+        let type_id = TypeId::of::<T>();
+        self.storages
+            .get_mut(&type_id)
+            .and_then(|s| s.downcast_mut::<ComponentStorage<T>>())
+            .and_then(|st| st.components.get_mut(&entity))
     }
 }

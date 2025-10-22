@@ -1,3 +1,5 @@
+use crate::components::{Position, Size, Velocity};
+use crate::ecs::World;
 use crate::renderer::{Config, create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
@@ -10,11 +12,30 @@ pub struct GameState {
 
 impl GameState {
     pub fn new(width: u32, height: u32) -> Self {
-        Self {
+        let mut game_state: GameState = GameState {
             frame_counter: 0,
             width,
             height,
-        }
+            world: World::new(),
+        };
+
+        // Create a player entity
+        let player = game_state.world.create_entity();
+        game_state
+            .world
+            .add_component(player, Position { x: 100.0, y: 100.0 });
+        game_state
+            .world
+            .add_component(player, Velocity { x: 1.0, y: 0.0 });
+        game_state.world.add_component(
+            player,
+            Size {
+                width: 50.0,
+                height: 50.0,
+            },
+        );
+
+        game_state
     }
 
     // Update game state for the next frame
