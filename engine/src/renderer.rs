@@ -3,9 +3,11 @@ use std::sync::Arc;
 use winit::application::ApplicationHandler;
 use winit::dpi::LogicalSize;
 use winit::error::EventLoopError;
-use winit::event::WindowEvent;
+use winit::event::{DeviceEvent, DeviceId, StartCause, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
+use winit::keyboard::KeyCode;
 use winit::window::{Window, WindowId};
+use winit_input_helper::WinitInputHelper;
 
 // Import GameState from engine
 use crate::engine::GameState;
@@ -21,6 +23,7 @@ pub struct Config {
 pub struct App {
     window: Option<Arc<Window>>,
     pixels: Option<Pixels<'static>>,
+    input: WinitInputHelper,
     size: LogicalSize<f64>,
     scaled_size: LogicalSize<f64>,
     title: String,
@@ -44,7 +47,7 @@ impl App {
         if let Some(game_state) = &mut self.game_state {
             // Update game state
             game_state.update();
-            
+
             // Generate frame directly in the main thread
             let frame = game_state.generate_frame();
             self.push_frame(&frame);
@@ -99,23 +102,48 @@ impl ApplicationHandler for App {
     }
 
     fn window_event(&mut self, event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
-        match event {
-            WindowEvent::CloseRequested => {
-                println!("The close button was pressed; stopping");
-                event_loop.exit();
-            }
-            WindowEvent::RedrawRequested => {
-                // Update game state and render frame
-                self.update_frame();
-                if let Some(pixels) = &mut self.pixels {
-                    if let Err(e) = pixels.render() {
-                        eprintln!("pixels.render() failed: {:?}", e);
-                    }
+        if self.input.process_window_event(&event) {
+            // Update game state and render frame
+            self.update_frame();
+
+            if let Some(pixels) = &mut self.pixels {
+                if let Err(e) = pixels.render() {
+                    eprintln!("pixels.render() failed: {:?}", e);
                 }
-                self.window.as_ref().unwrap().request_redraw();
             }
-            _ => (),
+
+            self.window.as_ref().unwrap().request_redraw();
         }
+    }
+
+    fn device_event(&mut self, _: &ActiveEventLoop, _: DeviceId, event: DeviceEvent) {
+        // pass in events
+        self.input.process_device_event(&event);
+    }
+
+    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
+        self.input.end_step();
+
+        if self.input.key_released(KeyCode::KeyQ)
+            || self.input.close_requested()
+            || self.input.destroyed()
+        {
+            println!(
+                "The application was requsted to close or the 'Q' key was pressed, quiting the application"
+            );
+            event_loop.exit();
+            return;
+        }
+
+        if self.input.key_held(KeyCode::Space) {
+            if let Some(game_state) = &mut self.game_state {
+                game_state.move_player();
+            }
+        }
+    }
+
+    fn new_events(&mut self, _: &ActiveEventLoop, _: StartCause) {
+        self.input.step();
     }
 }
 

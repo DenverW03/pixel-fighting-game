@@ -72,6 +72,13 @@ impl GameState {
 
         frame
     }
+
+    // Temp function, proof of concept, not a proper ECS system yet
+    pub fn move_player(&mut self) {
+        let player = Entity(0);
+        let position: &mut Position = self.world.get_component_mut::<Position>(player).unwrap();
+        position.x += 1.0;
+    }
 }
 
 pub fn initialize_game() {
