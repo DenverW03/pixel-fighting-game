@@ -1,5 +1,5 @@
 use crate::components::{Position, Size, Velocity};
-use crate::ecs::World;
+use crate::ecs::{Entity, World};
 use crate::renderer::{Config, create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
@@ -47,13 +47,22 @@ impl GameState {
     pub fn generate_frame(&self) -> Vec<u8> {
         let mut frame = vec![0x10; (self.width * self.height * 4) as usize];
 
+        let player: Entity = Entity(0);
+
+        // Getting the position and size of the player from the world storage
+        let position: &Position = self.world.get_component::<Position>(player).unwrap();
+        let size: &Size = self.world.get_component::<Size>(player).unwrap();
+
         for (i, pixel) in frame.chunks_exact_mut(4).enumerate() {
             let x = (i % self.width as usize) as i16;
             let y = (i / self.width as usize) as i16;
-            let box_x = (self.frame_counter % 200) as i16;
-            let box_y = 100;
+            let box_x = position.x as i16;
+            let box_y = position.y as i16;
 
-            let inside = x >= box_x && x < box_x + 50 && y >= box_y && y < box_y + 50;
+            let inside = x >= box_x
+                && x < box_x + size.width as i16
+                && y >= box_y
+                && y < box_y + size.height as i16;
             if inside {
                 pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple box
             } else {

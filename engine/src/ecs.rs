@@ -2,7 +2,7 @@ use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Entity(u32);
+pub struct Entity(pub u32);
 
 pub struct ComponentStorage<T> {
     pub components: HashMap<Entity, T>,
