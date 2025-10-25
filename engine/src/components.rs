@@ -12,3 +12,6 @@ pub struct Velocity {
     pub x: f64,
     pub y: f64,
 }
+
+// Player component, used to identify... well, the player lol
+pub struct Player {}
