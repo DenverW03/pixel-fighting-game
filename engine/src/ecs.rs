@@ -51,7 +51,16 @@ impl World {
         Entity(id)
     }
 
-    pub fn get_storage<T: 'static>(&mut self) -> &mut ComponentStorage<T> {
+    pub fn get_storage<T: 'static>(&self) -> &ComponentStorage<T> {
+        let type_id = TypeId::of::<T>();
+        self.storages
+            .get(&type_id)
+            .unwrap()
+            .downcast_ref::<ComponentStorage<T>>()
+            .unwrap()
+    }
+
+    pub fn get_storage_mut<T: 'static>(&mut self) -> &mut ComponentStorage<T> {
         let type_id = TypeId::of::<T>();
 
         if !self.storages.contains_key(&type_id) {
@@ -67,7 +76,7 @@ impl World {
     }
 
     pub fn add_component<T: 'static>(&mut self, entity: Entity, component: T) {
-        let component_storage = self.get_storage::<T>();
+        let component_storage = self.get_storage_mut::<T>();
         component_storage.insert_component(entity, component)
     }
 

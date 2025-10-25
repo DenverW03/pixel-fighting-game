@@ -1,7 +1,5 @@
-use winit::keyboard::KeyCode;
-
 use crate::components::{Player, Position, Size, Velocity};
-use crate::ecs::{ComponentStorage, Entity, World};
+use crate::ecs::{Entity, World};
 use crate::renderer::{Config, create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
@@ -36,6 +34,7 @@ impl GameState {
                 height: 50.0,
             },
         );
+        game_state.world.add_component(player, Player {});
 
         game_state
     }
@@ -49,7 +48,14 @@ impl GameState {
     pub fn generate_frame(&self) -> Vec<u8> {
         let mut frame = vec![0x10; (self.width * self.height * 4) as usize];
 
-        let player: Entity = Entity(0);
+        let player_storage = self.world.get_storage::<Player>();
+        let player: Entity = {
+            let mut player: Entity = Entity(0);
+            for (entity, _) in &player_storage.components {
+                player = *entity;
+            }
+            player
+        };
 
         // Getting the position and size of the player from the world storage
         let position: &Position = self.world.get_component::<Position>(player).unwrap();
@@ -75,7 +81,23 @@ impl GameState {
         frame
     }
 
-    // Temp function, proof of concept, not a proper ECS system yet
+    // Updates all position component for entities with both a position and a velocity
+    fn update_entity_positions(&mut self) {
+        let entity_velocities: Vec<(Entity, Velocity)> = {
+            let storage = self.world.get_storage::<Velocity>();
+            storage
+                .components
+                .iter()
+                .map(|(e, v)| (*e, v.clone())) // clone or copy
+                .collect()
+        };
+        for (entity, velocity) in entity_velocities {
+            let position = self.world.get_component_mut::<Position>(*entity).unwrap();
+            position.x += velocity.x;
+            position.y += velocity.y;
+        }
+    }
+
     pub fn update_player_velocity(&mut self, direction: &str) {
         /*let player = Entity(0);
         let position: &mut Position = self.world.get_component_mut::<Position>(player).unwrap();
