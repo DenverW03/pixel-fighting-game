@@ -1,5 +1,7 @@
-use crate::components::{Position, Size, Velocity};
-use crate::ecs::{Entity, World};
+use winit::keyboard::KeyCode;
+
+use crate::components::{Player, Position, Size, Velocity};
+use crate::ecs::{ComponentStorage, Entity, World};
 use crate::renderer::{Config, create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
@@ -74,10 +76,26 @@ impl GameState {
     }
 
     // Temp function, proof of concept, not a proper ECS system yet
-    pub fn move_player(&mut self) {
-        let player = Entity(0);
+    pub fn update_player_velocity(&mut self, direction: &str) {
+        /*let player = Entity(0);
         let position: &mut Position = self.world.get_component_mut::<Position>(player).unwrap();
-        position.x += 1.0;
+        position.x += 1.0;*/
+        let storage = self.world.get_storage::<Player>();
+        let mut player_list: Vec<Entity> = Vec::new();
+
+        for (entity, _component) in &storage.components {
+            player_list.push(*entity);
+        }
+        for player in player_list {
+            let velocity = self.world.get_component_mut::<Velocity>(player).unwrap();
+            match direction {
+                "up" => velocity.y += 1.0,
+                "down" => velocity.y -= 1.0,
+                "left" => velocity.x -= 1.0,
+                "right" => velocity.y += 1.0,
+                _ => (),
+            }
+        }
     }
 }
 

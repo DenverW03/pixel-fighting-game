@@ -51,7 +51,7 @@ impl World {
         Entity(id)
     }
 
-    fn get_storage<T: 'static>(&mut self) -> &mut ComponentStorage<T> {
+    pub fn get_storage<T: 'static>(&mut self) -> &mut ComponentStorage<T> {
         let type_id = TypeId::of::<T>();
 
         if !self.storages.contains_key(&type_id) {

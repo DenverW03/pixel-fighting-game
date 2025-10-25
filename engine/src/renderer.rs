@@ -135,9 +135,24 @@ impl ApplicationHandler for App {
             return;
         }
 
-        if self.input.key_held(KeyCode::Space) {
+        if self.input.key_held(KeyCode::ArrowUp) || self.input.key_held(KeyCode::KeyW) {
             if let Some(game_state) = &mut self.game_state {
-                game_state.move_player();
+                game_state.update_player_velocity("up");
+            }
+        }
+        if self.input.key_held(KeyCode::ArrowDown) || self.input.key_held(KeyCode::KeyS) {
+            if let Some(game_state) = &mut self.game_state {
+                game_state.update_player_velocity("down");
+            }
+        }
+        if self.input.key_held(KeyCode::ArrowLeft) || self.input.key_held(KeyCode::KeyA) {
+            if let Some(game_state) = &mut self.game_state {
+                game_state.update_player_velocity("left");
+            }
+        }
+        if self.input.key_held(KeyCode::ArrowRight) || self.input.key_held(KeyCode::KeyD) {
+            if let Some(game_state) = &mut self.game_state {
+                game_state.update_player_velocity("right");
             }
         }
     }
