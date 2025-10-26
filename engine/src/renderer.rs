@@ -45,9 +45,6 @@ impl App {
 
     fn update_frame(&mut self) {
         if let Some(game_state) = &mut self.game_state {
-            // Update game state
-            game_state.update();
-
             // Generate frame directly in the main thread
             let frame = game_state.generate_frame();
             self.push_frame(&frame);

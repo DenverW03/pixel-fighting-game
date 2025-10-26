@@ -4,7 +4,6 @@ use crate::renderer::{Config, create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
 pub struct GameState {
-    pub frame_counter: u32,
     pub width: u32,
     pub height: u32,
     pub world: World,
@@ -13,7 +12,6 @@ pub struct GameState {
 impl GameState {
     pub fn new(width: u32, height: u32) -> Self {
         let mut game_state: GameState = GameState {
-            frame_counter: 0,
             width,
             height,
             world: World::new(),
@@ -26,7 +24,7 @@ impl GameState {
             .add_component(player, Position { x: 100.0, y: 100.0 });
         game_state
             .world
-            .add_component(player, Velocity { x: 1.0, y: 0.0 });
+            .add_component(player, Velocity { x: 0.0, y: 0.0 });
         game_state.world.add_component(
             player,
             Size {
@@ -39,13 +37,11 @@ impl GameState {
         game_state
     }
 
-    // Update game state for the next frame
-    pub fn update(&mut self) {
-        self.frame_counter += 2; // Same increment as before
-    }
-
     // Generate a frame for the current game state
-    pub fn generate_frame(&self) -> Vec<u8> {
+    pub fn generate_frame(&mut self) -> Vec<u8> {
+        // Start by updating all physics logic, that will affect rendering
+        self.update_entity_positions();
+
         let mut frame = vec![0x10; (self.width * self.height * 4) as usize];
 
         let player_storage = self.world.get_storage::<Player>();
@@ -88,20 +84,17 @@ impl GameState {
             storage
                 .components
                 .iter()
-                .map(|(e, v)| (*e, v.clone())) // clone or copy
+                .map(|(e, v)| (*e, v.clone()))
                 .collect()
         };
         for (entity, velocity) in entity_velocities {
-            let position = self.world.get_component_mut::<Position>(*entity).unwrap();
+            let position = self.world.get_component_mut::<Position>(entity).unwrap();
             position.x += velocity.x;
             position.y += velocity.y;
         }
     }
 
     pub fn update_player_velocity(&mut self, direction: &str) {
-        /*let player = Entity(0);
-        let position: &mut Position = self.world.get_component_mut::<Position>(player).unwrap();
-        position.x += 1.0;*/
         let storage = self.world.get_storage::<Player>();
         let mut player_list: Vec<Entity> = Vec::new();
 
@@ -111,10 +104,18 @@ impl GameState {
         for player in player_list {
             let velocity = self.world.get_component_mut::<Velocity>(player).unwrap();
             match direction {
-                "up" => velocity.y += 1.0,
-                "down" => velocity.y -= 1.0,
-                "left" => velocity.x -= 1.0,
-                "right" => velocity.y += 1.0,
+                "up" => {
+                    velocity.y = (velocity.y - 1.0).clamp(-5.0, 5.0);
+                }
+                "down" => {
+                    velocity.y = (velocity.y + 1.0).clamp(-5.0, 5.0);
+                }
+                "left" => {
+                    velocity.x = (velocity.x - 1.0).clamp(-5.0, 5.0);
+                }
+                "right" => {
+                    velocity.x = (velocity.x + 1.0).clamp(-5.0, 5.0);
+                }
                 _ => (),
             }
         }
