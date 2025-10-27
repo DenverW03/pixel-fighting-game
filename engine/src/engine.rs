@@ -3,6 +3,9 @@ use crate::components::{Player, Position, Size, Velocity};
 use crate::ecs::{Entity, World};
 use crate::renderer::{create_app, create_event_loop, run};
 
+// An RGBA pixel requires 4 numbers for the R,G,B,A values
+const RGBA_SIZE: u32 = 4;
+
 // Game state, includes entity+component storage
 pub struct GameState {
     pub width: u32,
@@ -43,7 +46,7 @@ impl GameState {
         // Start by updating all physics logic, that will affect rendering
         self.update_entity_positions();
 
-        let mut frame = vec![0x10; (self.width * self.height * 4) as usize];
+        let mut frame = vec![0x10; (self.width * self.height * RGBA_SIZE) as usize];
 
         let player_storage = self.world.get_storage::<Player>();
         let player: Entity = {
@@ -69,7 +72,7 @@ impl GameState {
                 && y >= box_y
                 && y < box_y + size.height as i16;
             if inside {
-                pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple box
+                pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple
             } else {
                 pixel.copy_from_slice(&[0x48, 0xb2, 0xe8, 0xff]); // sky color
             }
