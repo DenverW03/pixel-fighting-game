@@ -61,6 +61,7 @@ impl GameState {
         let position: &Position = self.world.get_component::<Position>(player).unwrap();
         let size: &Size = self.world.get_component::<Size>(player).unwrap();
 
+        let mut switch: bool = false;
         for (i, pixel) in frame.chunks_exact_mut(4).enumerate() {
             let x = (i % self.width as usize) as i16;
             let y = (i / self.width as usize) as i16;
@@ -72,10 +73,16 @@ impl GameState {
                 && y >= box_y
                 && y < box_y + size.height as i16;
             if inside {
-                pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple
+                if switch {
+                    pixel.copy_from_slice(&[0x5e, 0x48, 0xe8, 0xff]); // purple
+                } else {
+                    pixel.copy_from_slice(&[0x60, 0x32, 0x10, 0xff]);
+                }
             } else {
                 pixel.copy_from_slice(&[0x48, 0xb2, 0xe8, 0xff]); // sky color
             }
+
+            switch = !switch;
         }
 
         frame

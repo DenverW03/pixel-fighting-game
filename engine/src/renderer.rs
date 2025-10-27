@@ -48,9 +48,8 @@ impl App {
     pub fn push_frame(&mut self, new_frame: &[u8]) {
         if let Some(pixels) = self.pixels.as_mut() {
             let frame = pixels.frame_mut();
-            let index_max = (self.scaled_size.width * self.scaled_size.height) as usize;
 
-            for i in 0..index_max {
+            for i in 0..frame.len() {
                 frame[i] = new_frame[i];
             }
 
