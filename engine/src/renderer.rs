@@ -1,3 +1,5 @@
+use crate::Config;
+use crate::engine::GameState;
 use pixels::{Pixels, SurfaceTexture};
 use std::sync::Arc;
 use winit::application::ApplicationHandler;
@@ -8,16 +10,6 @@ use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::keyboard::KeyCode;
 use winit::window::{Window, WindowId};
 use winit_input_helper::WinitInputHelper;
-
-// Import GameState from engine
-use crate::engine::GameState;
-
-pub struct Config {
-    pub title: String,
-    pub width: i32,
-    pub height: i32,
-    pub scale: f64,
-}
 
 #[derive(Default)]
 pub struct App {

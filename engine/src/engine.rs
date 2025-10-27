@@ -1,6 +1,7 @@
+use crate::Config;
 use crate::components::{Player, Position, Size, Velocity};
 use crate::ecs::{Entity, World};
-use crate::renderer::{Config, create_app, create_event_loop, run};
+use crate::renderer::{create_app, create_event_loop, run};
 
 // Game state, includes entity+component storage
 pub struct GameState {
@@ -105,15 +106,27 @@ impl GameState {
             let velocity = self.world.get_component_mut::<Velocity>(player).unwrap();
             match direction {
                 "up" => {
+                    if velocity.y > 0.0 {
+                        velocity.y = 0.0
+                    }
                     velocity.y = (velocity.y - 1.0).clamp(-5.0, 5.0);
                 }
                 "down" => {
+                    if velocity.y < 0.0 {
+                        velocity.y = 0.0
+                    }
                     velocity.y = (velocity.y + 1.0).clamp(-5.0, 5.0);
                 }
                 "left" => {
+                    if velocity.x > 0.0 {
+                        velocity.x = 0.0
+                    }
                     velocity.x = (velocity.x - 1.0).clamp(-5.0, 5.0);
                 }
                 "right" => {
+                    if velocity.x < 0.0 {
+                        velocity.x = 0.0
+                    }
                     velocity.x = (velocity.x + 1.0).clamp(-5.0, 5.0);
                 }
                 _ => (),
@@ -122,20 +135,13 @@ impl GameState {
     }
 }
 
-pub fn initialize_game() {
-    let cfg = Config {
-        title: "Pixel Fighting Game".into(),
-        width: 320,
-        height: 240,
-        scale: 2.0,
-    };
-
+pub fn initialize_game(config: Config) {
     // MacOS moment: event_loop must be created on main thread
     let event_loop = create_event_loop();
 
     // Create app with game state
-    let game_state = GameState::new(cfg.width as u32, cfg.height as u32);
-    let app = create_app(cfg, game_state);
+    let game_state = GameState::new(config.width as u32, config.height as u32);
+    let app = create_app(config, game_state);
 
     run(app, event_loop).unwrap();
 }
