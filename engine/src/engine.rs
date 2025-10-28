@@ -94,6 +94,8 @@ impl GameState {
         frame
     }
 
+    fn draw_player(&mut self, frame: Vec<u8>) {}
+
     // Updates all position component for entities with both a position and a velocity
     fn update_entity_positions(&mut self) {
         let entity_velocities: Vec<(Entity, Velocity)> = {
