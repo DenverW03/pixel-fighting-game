@@ -1,10 +1,16 @@
-use crate::Config;
 use crate::components::{Player, Position, Size, Velocity};
 use crate::ecs::{Entity, World};
 use crate::renderer::{create_app, create_event_loop, run};
 
 // An RGBA pixel requires 4 numbers for the R,G,B,A values
 const RGBA_SIZE: u32 = 4;
+
+pub struct Config {
+    pub title: String,
+    pub width: i32,
+    pub height: i32,
+    pub scale: f64,
+}
 
 // Game state, includes entity+component storage
 pub struct GameState {
@@ -140,6 +146,25 @@ impl GameState {
                     velocity.x = (velocity.x + 1.0).clamp(-5.0, 5.0);
                 }
                 _ => (),
+            }
+        }
+    }
+
+    pub fn zero_player_vel(&mut self, x: bool, y: bool) {
+        let storage = self.world.get_storage::<Player>();
+        let mut player_list: Vec<Entity> = Vec::new();
+
+        for (entity, _component) in &storage.components {
+            player_list.push(*entity);
+        }
+
+        for player in player_list {
+            let velocity = self.world.get_component_mut::<Velocity>(player).unwrap();
+            if x {
+                velocity.x = 0.0
+            }
+            if y {
+                velocity.y = 0.0
             }
         }
     }

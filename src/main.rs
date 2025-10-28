@@ -1,12 +1,16 @@
-use engine::{Config, run_game};
+use engine::run_game;
 
 fn main() {
-    let config = Config {
-        title: "Pixel Fighting Game".into(),
-        width: 640,
-        height: 360,
-        scale: 2.0,
-    };
+    let width: i32 = 640;
+    let height: i32 = 360;
+    let window_width: i32 = 1920;
+    let window_height: i32 = 1080;
 
-    run_game(config);
+    run_game(
+        "Pixel Fighting Game".into(),
+        width,
+        height,
+        window_width,
+        window_height,
+    );
 }

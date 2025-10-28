@@ -1,17 +1,23 @@
-use engine::initialize_game;
+use engine::{Config, initialize_game};
 
 mod components;
 mod ecs;
 mod engine;
 mod renderer;
 
-pub struct Config {
-    pub title: String,
-    pub width: i32,
-    pub height: i32,
-    pub scale: f64,
-}
+pub fn run_game(
+    title: String,
+    pixel_width: i32,
+    pixel_height: i32,
+    _window_width: i32,
+    window_height: i32,
+) {
+    let config = Config {
+        title: title,
+        width: pixel_width,
+        height: pixel_height,
+        scale: (window_height / pixel_height) as f64,
+    };
 
-pub fn run_game(config: Config) {
     initialize_game(config);
 }

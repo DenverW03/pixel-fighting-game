@@ -89,7 +89,7 @@ impl ApplicationHandler for App {
         self.window.as_ref().unwrap().request_redraw();
     }
 
-    fn window_event(&mut self, event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
+    fn window_event(&mut self, _event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
         if self.input.process_window_event(&event) {
             // Update game state and render frame
             self.update_frame();
@@ -123,25 +123,35 @@ impl ApplicationHandler for App {
             return;
         }
 
+        let mut x_input: bool = false;
+        let mut y_input: bool = false;
         if self.input.key_held(KeyCode::ArrowUp) || self.input.key_held(KeyCode::KeyW) {
             if let Some(game_state) = &mut self.game_state {
                 game_state.update_player_velocity("up");
             }
+            y_input = true;
         }
         if self.input.key_held(KeyCode::ArrowDown) || self.input.key_held(KeyCode::KeyS) {
             if let Some(game_state) = &mut self.game_state {
                 game_state.update_player_velocity("down");
             }
+            y_input = true;
         }
         if self.input.key_held(KeyCode::ArrowLeft) || self.input.key_held(KeyCode::KeyA) {
             if let Some(game_state) = &mut self.game_state {
                 game_state.update_player_velocity("left");
             }
+            x_input = true;
         }
         if self.input.key_held(KeyCode::ArrowRight) || self.input.key_held(KeyCode::KeyD) {
             if let Some(game_state) = &mut self.game_state {
                 game_state.update_player_velocity("right");
             }
+            x_input = true;
+        }
+
+        if let Some(game_state) = &mut self.game_state {
+            game_state.zero_player_vel(!x_input, !y_input);
         }
     }
 
