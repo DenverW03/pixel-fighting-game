@@ -1,3 +1,4 @@
+use crate::Game;
 use crate::components::{Player, Position, Size, Velocity};
 use crate::ecs::{Entity, World};
 use crate::renderer::{create_app, create_event_loop, run};
@@ -5,6 +6,7 @@ use crate::renderer::{create_app, create_event_loop, run};
 // An RGBA pixel requires 4 numbers for the R,G,B,A values
 const RGBA_SIZE: u32 = 4;
 
+#[derive(Clone)]
 pub struct Config {
     pub title: String,
     pub width: i32,
@@ -172,13 +174,10 @@ impl GameState {
     }
 }
 
-pub fn initialize_game(config: Config) {
+pub fn start_game(game: &mut Game) {
     // MacOS moment: event_loop must be created on main thread
     let event_loop = create_event_loop();
 
-    // Create app with game state
-    let game_state = GameState::new(config.width as u32, config.height as u32);
-    let app = create_app(config, game_state);
-
+    let app = create_app(game.config, game.game_state);
     run(app, event_loop).unwrap();
 }
