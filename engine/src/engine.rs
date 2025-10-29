@@ -178,6 +178,6 @@ pub fn start_game(game: &mut Game) {
     // MacOS moment: event_loop must be created on main thread
     let event_loop = create_event_loop();
 
-    let app = create_app(game.config, game.game_state);
+    let app = create_app(game);
     run(app, event_loop).unwrap();
 }

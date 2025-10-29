@@ -1,5 +1,5 @@
-use crate::Config;
 use crate::engine::GameState;
+use crate::{Config, Game};
 use pixels::{Pixels, SurfaceTexture};
 use std::sync::Arc;
 use winit::application::ApplicationHandler;
@@ -23,7 +23,7 @@ pub struct App {
 }
 
 impl App {
-    pub fn with_config(config: Config, game_state: GameState) -> Self {
+    pub fn with_config(config: Config, game_state: &mut GameState) -> Self {
         let mut app = App::default();
         app.title = config.title;
         app.size = LogicalSize::new(config.width as f64, config.height as f64);
@@ -31,7 +31,7 @@ impl App {
             config.width as f64 * config.scale,
             config.height as f64 * config.scale,
         );
-        app.game_state = Some(game_state);
+        app.game_state = Some(*game_state);
         app
     }
 
@@ -165,8 +165,8 @@ pub fn create_event_loop() -> EventLoop<()> {
 }
 
 // Creates an App with the given Config and GameState
-pub fn create_app(config: Config, game_state: GameState) -> App {
-    App::with_config(config, game_state)
+pub fn create_app(game: &mut Game) -> App {
+    App::with_config(game.config, &mut game.game_state)
 }
 
 // Runs the event loop and app
