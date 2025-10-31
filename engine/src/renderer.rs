@@ -1,5 +1,5 @@
+use crate::Config;
 use crate::engine::GameState;
-use crate::{Config, Game};
 use pixels::{Pixels, SurfaceTexture};
 use std::sync::Arc;
 use winit::application::ApplicationHandler;
@@ -11,7 +11,6 @@ use winit::keyboard::KeyCode;
 use winit::window::{Window, WindowId};
 use winit_input_helper::WinitInputHelper;
 
-#[derive(Default)]
 pub struct App {
     window: Option<Arc<Window>>,
     pixels: Option<Pixels<'static>>,
@@ -19,24 +18,30 @@ pub struct App {
     size: LogicalSize<f64>,
     scaled_size: LogicalSize<f64>,
     title: String,
-    game_state: Box<GameState>,
+    game_state: GameState,
 }
 
 impl App {
-    pub fn with_config(config: Config, game_state: Box<GameState>) -> Self {
-        let mut app = App::default();
-        app.title = config.title;
-        app.size = LogicalSize::new(config.width as f64, config.height as f64);
-        app.scaled_size = LogicalSize::new(
+    pub fn with_config(config: Config, game_state: GameState) -> Self {
+        let size = LogicalSize::new(config.width as f64, config.height as f64);
+        let scaled_size = LogicalSize::new(
             config.width as f64 * config.scale,
             config.height as f64 * config.scale,
         );
-        app.game_state = game_state;
-        app
+
+        App {
+            window: None,
+            pixels: None,
+            input: WinitInputHelper::new(),
+            size,
+            scaled_size,
+            title: config.title,
+            game_state,
+        }
     }
 
     fn update_frame(&mut self) {
-        // Generate frame directly in the main thread
+        self.game_state.update_entity_positions();
         let frame = self.game_state.generate_frame();
         self.push_frame(&frame);
     }
@@ -153,8 +158,8 @@ pub fn create_event_loop() -> EventLoop<()> {
 }
 
 // Creates an App with the given Config and GameState
-pub fn create_app(game: &mut Game) -> App {
-    App::with_config(game.config, game.game_state)
+pub fn create_app(config: Config, game_state: GameState) -> App {
+    App::with_config(config, game_state)
 }
 
 // Runs the event loop and app

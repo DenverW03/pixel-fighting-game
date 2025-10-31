@@ -1,4 +1,4 @@
-use engine::{Config, GameState, start_game};
+use engine::{Config, start_game};
 
 mod components;
 mod ecs;
@@ -7,7 +7,6 @@ mod renderer;
 
 pub struct Game {
     config: Config,
-    game_state: Box<GameState>,
 }
 
 impl Game {
@@ -19,21 +18,16 @@ impl Game {
         window_height: i32,
     ) -> Self {
         let config = Config {
-            title: title,
+            title,
             width: pixel_width,
             height: pixel_height,
             scale: (window_height / pixel_height) as f64,
         };
-        let game_state: GameState = GameState::new(config.width as u32, config.height as u32);
 
-        let game: Game = Game {
-            config: config,
-            game_state: Box::<GameState>::new(game_state),
-        };
-        game
+        Game { config }
     }
 
-    pub fn run_game(&mut self) {
-        start_game(self);
+    pub fn run_game(self) {
+        start_game(self.config);
     }
 }

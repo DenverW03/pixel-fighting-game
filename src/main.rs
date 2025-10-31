@@ -1,4 +1,4 @@
-use engine::{create_game, run_game};
+use engine::Game;
 
 fn main() {
     let width: i32 = 640;
@@ -6,7 +6,7 @@ fn main() {
     let window_width: i32 = 1920;
     let window_height: i32 = 1080;
 
-    create_game(
+    let game: Game = Game::new(
         "Pixel Fighting Game".into(),
         width,
         height,
@@ -14,5 +14,5 @@ fn main() {
         window_height,
     );
 
-    run_game()
+    game.run_game()
 }
