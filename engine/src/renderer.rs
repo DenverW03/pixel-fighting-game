@@ -19,11 +19,11 @@ pub struct App {
     size: LogicalSize<f64>,
     scaled_size: LogicalSize<f64>,
     title: String,
-    game_state: Option<GameState>,
+    game_state: Box<GameState>,
 }
 
 impl App {
-    pub fn with_config(config: Config, game_state: &mut GameState) -> Self {
+    pub fn with_config(config: Config, game_state: Box<GameState>) -> Self {
         let mut app = App::default();
         app.title = config.title;
         app.size = LogicalSize::new(config.width as f64, config.height as f64);
@@ -31,16 +31,14 @@ impl App {
             config.width as f64 * config.scale,
             config.height as f64 * config.scale,
         );
-        app.game_state = Some(*game_state);
+        app.game_state = game_state;
         app
     }
 
     fn update_frame(&mut self) {
-        if let Some(game_state) = &mut self.game_state {
-            // Generate frame directly in the main thread
-            let frame = game_state.generate_frame();
-            self.push_frame(&frame);
-        }
+        // Generate frame directly in the main thread
+        let frame = self.game_state.generate_frame();
+        self.push_frame(&frame);
     }
 
     // Pushes a new frame to the pixels buffer
@@ -126,33 +124,23 @@ impl ApplicationHandler for App {
         let mut x_input: bool = false;
         let mut y_input: bool = false;
         if self.input.key_held(KeyCode::ArrowUp) || self.input.key_held(KeyCode::KeyW) {
-            if let Some(game_state) = &mut self.game_state {
-                game_state.update_player_velocity("up");
-            }
+            self.game_state.update_player_velocity("up");
             y_input = true;
         }
         if self.input.key_held(KeyCode::ArrowDown) || self.input.key_held(KeyCode::KeyS) {
-            if let Some(game_state) = &mut self.game_state {
-                game_state.update_player_velocity("down");
-            }
+            self.game_state.update_player_velocity("down");
             y_input = true;
         }
         if self.input.key_held(KeyCode::ArrowLeft) || self.input.key_held(KeyCode::KeyA) {
-            if let Some(game_state) = &mut self.game_state {
-                game_state.update_player_velocity("left");
-            }
+            self.game_state.update_player_velocity("left");
             x_input = true;
         }
         if self.input.key_held(KeyCode::ArrowRight) || self.input.key_held(KeyCode::KeyD) {
-            if let Some(game_state) = &mut self.game_state {
-                game_state.update_player_velocity("right");
-            }
+            self.game_state.update_player_velocity("right");
             x_input = true;
         }
 
-        if let Some(game_state) = &mut self.game_state {
-            game_state.zero_player_vel(!x_input, !y_input);
-        }
+        self.game_state.zero_player_vel(!x_input, !y_input);
     }
 
     fn new_events(&mut self, _: &ActiveEventLoop, _: StartCause) {
@@ -166,7 +154,7 @@ pub fn create_event_loop() -> EventLoop<()> {
 
 // Creates an App with the given Config and GameState
 pub fn create_app(game: &mut Game) -> App {
-    App::with_config(game.config, &mut game.game_state)
+    App::with_config(game.config, game.game_state)
 }
 
 // Runs the event loop and app

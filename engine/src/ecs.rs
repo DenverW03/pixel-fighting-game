@@ -32,6 +32,7 @@ impl<T> ComponentStorage<T> {
     }
 }
 
+#[derive(Default)]
 pub struct World {
     next_id: u32,
     storages: HashMap<TypeId, Box<dyn Any>>,

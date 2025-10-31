@@ -15,6 +15,7 @@ pub struct Config {
 }
 
 // Game state, includes entity+component storage
+#[derive(Default)]
 pub struct GameState {
     pub width: u32,
     pub height: u32,
@@ -96,6 +97,7 @@ impl GameState {
         frame
     }
 
+    // TODO: Implement
     fn draw_player(&mut self, frame: Vec<u8>) {}
 
     // Updates all position component for entities with both a position and a velocity

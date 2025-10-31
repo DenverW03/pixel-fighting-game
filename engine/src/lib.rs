@@ -7,7 +7,7 @@ mod renderer;
 
 pub struct Game {
     config: Config,
-    game_state: GameState,
+    game_state: Box<GameState>,
 }
 
 impl Game {
@@ -28,7 +28,7 @@ impl Game {
 
         let game: Game = Game {
             config: config,
-            game_state: game_state,
+            game_state: Box::<GameState>::new(game_state),
         };
         game
     }
